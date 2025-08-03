@@ -1,1 +1,2203 @@
 
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>星空绽放-为你而闪耀</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+body {
+    color: #fff;
+    font-family: 'Microsoft YaHei', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    cursor: default;
+    position: relative;
+}
+
+/* 新增遮罩层 */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        url('http://vcg00.cfp.cn/creative/vcg/800/new/VCG211438148663.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    z-index: -1; /* 确保在背景层 */
+    filter: brightness(0.3); /* 降低50%亮度 */
+}
+
+<!-- 在CSS部分添加北京弹窗的样式 -->
+/* 新增北京弹窗样式 */
+.beijing-box {
+    position: absolute;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.85);
+    border-radius: 12px;
+    padding: 16px;
+    border: 2px solid rgba(255, 215, 0, 0.6); /* 金色边框 */
+    width: 240px;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.8); /* 金色阴影 */
+    transform: scale(0.8);
+    transform-origin: bottom right;
+    overflow-y: auto;
+    max-height: 70vh;
+}
+
+.beijing-box.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(0.8) translateY(20px);
+}
+
+/* 响应式调整 */
+@media (orientation: portrait) {
+    .beijing-box {
+        bottom: 100px;
+        left: 50%;
+        transform: translateX(-50%) scale(0.8);
+        transform-origin: bottom center;
+    }
+    .beijing-box.hidden {
+        transform: translateX(-50%) scale(0.8) translateY(20px);
+    }
+}
+
+@media (orientation: landscape) {
+    .beijing-box {
+        bottom: 80px;
+        right: 16px;
+    }
+}
+
+.beijing-box h3 {
+    margin-bottom: 12px;
+    color: #ffd700; /* 金色 */
+    font-size: 14.4px;
+    text-align: center;
+    text-shadow: 0 0 4px rgba(255, 215, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+.beijing-content {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #fff;
+}
+
+.beijing-icon {
+    color: #ffd700;
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+
+
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        #fireworksCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .floating-texts {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        .floating-text {
+            position: absolute;
+            white-space: nowrap;
+            font-size: 16px;
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            animation: floatText linear;
+            animation-fill-mode: forwards;
+            opacity: 0.5;
+            transition: transform 0.5s ease-out;
+        }
+        
+        @keyframes floatText {
+            from {
+                transform: translateX(100vw);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+        
+		 .button-container {
+			   
+			    position: absolute;
+			   bottom: 10px;
+			    left: 0;
+			    
+			     z-index: 200;
+			     display: flex;
+			     gap: 12px;
+			     transition: all 0.3s ease;
+			     opacity: 1;
+			    justify-content: flex-start;
+			     width: 100%;
+			    margin: 0 auto;
+			    padding: 5px;
+			   animation: slide 15s linear infinite;
+               overflow-x: auto; /* 添加水平滚动 */
+               white-space: nowrap; /* 防止按钮换行 */
+               scrollbar-width: none; /* 隐藏滚动条 */
+			}
+			
+				/* 添加隐藏滚动条样式 */
+			.button-container::-webkit-scrollbar {
+			    display: none;
+			}
+			
+		@media (orientation: portrait) {
+			    .control-button {
+			        min-width: 85px;
+			        padding: 8px 12px;
+			        font-size: 10px;
+			    }
+			}
+			
+		@media (orientation: landscape) {
+			    .control-button {
+			        min-width: 75px;
+			        padding: 7px 10px;
+			        font-size: 9px;
+			    }
+			}
+        
+        .control-button {
+			    background: linear-gradient(135deg, #ff5e9e, #ff6b9e);
+			    border: none;
+			    color: white;
+			    padding: 10px 16px;
+			    border-radius: 20px;
+			    font-size: 12px;
+			    cursor: pointer;
+			    transition: all 0.3s;
+			    display: flex;
+			    align-items: center;
+			    justify-content: center;
+			    gap: 6px;
+			    box-shadow: 0 4px 8px rgba(255, 94, 158, 0.4);
+			    min-width: 110px;
+			    font-weight: 600;
+			    letter-spacing: 0.5px;
+			    position: relative;
+			    overflow: hidden;
+			}
+			        
+			.control-button:hover {
+			    transform: translateY(-2px);
+			    box-shadow: 0 6px 12px rgba(255, 94, 158, 0.6);
+			}   
+		.control-button::before {
+			    content: '';
+			    position: absolute;
+			    top: -50%;
+			    left: -50%;
+			    width: 200%;
+			    height: 200%;
+			    background: linear-gradient(
+			        to right,
+			        rgba(255,255,255,0) 0%,
+			        rgba(255,255,255,0.2) 50%,
+			        rgba(255,255,255,0) 100%
+			    );
+			    transform: rotate(45deg);
+			    transition: transform 0.6s;
+			}
+			
+			.control-button:hover::before {
+			    transform: translateX(100%) rotate(45deg);
+			}
+						     
+			          
+			               
+			                         
+        .control-button i {
+            font-size: 12px;
+        }
+        
+        .control-panel {
+            position: absolute;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 220px;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.5);
+            transform: scale(0.8);
+            transform-origin: bottom right;
+            overflow-y: auto;
+            max-height: 70vh;
+        }
+        
+        .control-panel.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.8) translateY(20px);
+        }
+        
+        @media (orientation: portrait) {
+            .control-panel {
+                bottom: 100px;
+                left: 50%;
+                transform: translateX(-50%) scale(0.8);
+                transform-origin: bottom center;
+            }
+            .control-panel.hidden {
+                transform: translateX(-50%) scale(0.8) translateY(20px);
+            }
+        }
+        
+        @media (orientation: landscape) {
+            .control-panel {
+                bottom: 80px;
+                right: 16px;
+            }
+        }
+        
+        .control-panel h3 {
+            margin-bottom: 12px;
+            color: #ffb6c1;
+            font-size: 14.4px;
+            text-align: center;
+            text-shadow: 0 0 4px rgba(255, 182, 193, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .slider-container {
+            margin: 9.6px 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 6.4px;
+            color: #e0c3fc;
+            font-size: 11.2px;
+            display: flex;
+            align-items: center;
+        }
+        
+        label i {
+            margin-right: 8px;
+            width: 16px;
+            text-align: center;
+            font-size: 12.8px;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 4.8px;
+            background: #4a2a7a;
+            border-radius: 2.4px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14.4px;
+            height: 14.4px;
+            background: #ff5e9e;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 4px rgba(255, 94, 158, 0.8);
+        }
+        
+        .level-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 10px;
+            color: #e0c3fc;
+        }
+        
+        .level-mark {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .top-controls {
+            position: absolute;
+            top: 30px;
+            right: 20px;
+            z-index: 300;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.0);
+            padding: 10px 15px;
+            border-radius: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 10px rgba(0, 173, 238, 0.4);
+        }
+        
+        .firework-counter {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #e0c3fc;
+        }
+        
+        .firework-counter i {
+            margin-right: 8px;
+            color: #ff5e9e;
+        }
+        
+        .audio-control {
+            cursor: pointer;
+        }
+        
+        .audio-control i {
+            font-size: 20px;
+            color: #ff5e9e;
+        }
+        
+        .tv-box {
+            position: absolute;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.75);
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 0 20px rgba(0, 173, 238, 0.6);
+            border: 1.6px solid #00adee;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            width: 160px;
+            transform: scale(0.8);
+            transform-origin: bottom right;
+        }
+        
+        .tv-box.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.8) translateY(20px);
+        }
+        
+        @media (orientation: portrait) {
+            .tv-box {
+                bottom: 100px;
+                left: 50%;
+                transform: translateX(-50%) scale(0.8);
+                transform-origin: bottom center;
+            }
+            .tv-box.hidden {
+                transform: translateX(-50%) scale(0.8) translateY(20px);
+            }
+        }
+        
+        @media (orientation: landscape) {
+            .tv-box {
+                bottom: 80px;
+                right: 16px;
+            }
+        }
+        
+        .tv-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 9.6px;
+        }
+        
+        .tv-logo {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(135deg, #00adee, #00c9ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+        }
+        
+        .tv-title {
+            font-size: 12.8px;
+            font-weight: bold;
+            background: linear-gradient(to right, #00adee, #00c9ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 4px rgba(0, 173, 238, 0.4);
+        }
+        
+        .tv-screen {
+            width: 100%;
+            height: 96px;
+            background: #000;
+            border-radius: 6.4px;
+            overflow: hidden;
+            position: relative;
+            border: 1.6px solid #444;
+            box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.7);
+            margin-bottom: 9.6px;
+        }
+        
+        .tv-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+        }
+        
+        .tv-image.active {
+            opacity: 1;
+        }
+        
+        .tv-info {
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 6.4px;
+            padding: 8px;
+            border: 0.8px solid rgba(255, 255, 255, 0.15);
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6.4px;
+            font-size: 10.4px;
+            align-items: center;
+        }
+        
+        .info-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .info-label {
+            color: #e0c3fc;
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-label i {
+            margin-right: 4.8px;
+            font-size: 9.6px;
+            color: #00adee;
+        }
+        
+        .info-value {
+            font-weight: bold;
+            color: #ffcc00;
+            text-shadow: 0 0 2.4px rgba(255, 204, 0, 0.5);
+            font-size: 10.4px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .tv-antenna {
+            position: absolute;
+            top: -16px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 28px;
+        }
+        
+        .antenna {
+            width: 1.6px;
+            height: 16px;
+            background: #00adee;
+            position: relative;
+            border-radius: 1.6px;
+        }
+        
+        .antenna::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -2.4px;
+            width: 7.2px;
+            height: 7.2px;
+            border-radius: 50%;
+            background: #00adee;
+            box-shadow: 0 0 4.8px rgba(0, 173, 238, 0.8);
+        }
+        
+        .page-title {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 10;
+            text-shadow: 0 0 10px rgba(255, 105, 180, 0.8);
+            max-width: 80%;
+        }
+        
+        .page-title h1 {
+            font-size: 24px;
+            background: linear-gradient(to right, #ff5e9e, #ffcc00, #00adee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+            line-height: 1.2;
+        }
+        
+        .page-title p {
+            font-size: 15px;
+            color: #e0c3fc;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+        
+        .loading-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 25px 35px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #00adee;
+            box-shadow: 0 0 25px rgba(0, 173, 238, 0.8);
+        }
+        
+        .loading-indicator p {
+            margin-top: 20px;
+            color: #e0c3fc;
+            font-size: 16px;
+            max-width: 300px;
+            line-height: 1.5;
+        }
+        
+        .spinner {
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 5px solid #00adee;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .status-message {
+            margin-top: 15px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            font-size: 14px;
+            color: #ffcc00;
+            max-width: 300px;
+        }
+        
+        .heart-icon {
+            color: #ff5e9e;
+            margin-right: 1px;
+            text-shadow: 0 0 5px rgba(255, 94, 158, 0.8);
+        }
+        
+        .mood-icons {
+            display: flex;
+            gap: 2.4px;
+        }
+        
+        .mood-icon {
+            color: #ff5e9e;
+            text-shadow: 0 0 2.4px rgba(255, 94, 158, 0.8);
+            font-size: 10px;
+        }
+        
+        .resource-status {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 6px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-icon {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        
+        .status-icon.local {
+            background-color: #66ff66;
+            box-shadow: 0 0 5px #66ff66;
+        }
+        
+        .status-icon.network {
+            background-color: #ffcc00;
+            box-shadow: 0 0 5px #ffcc00;
+        }
+        
+        .status-icon.failed {
+            background-color: #ff6666;
+            box-shadow: 0 0 5px #ff6666;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: linear-gradient(to right, #ff5e9e, #00adee);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        
+        .hint-box {
+            position: absolute;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            color: #e0c3fc;
+            text-align: center;
+            z-index: 400;
+            opacity: 1;
+            transition: opacity 1s ease;
+            box-shadow: 0 0 15px rgba(0, 173, 238, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .hint-box.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .hint-box i {
+            margin-right: 8px;
+            color: #ffcc00;
+        }
+        
+        .notification {
+            position: absolute;
+            top: 80px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: #ffcc00;
+            padding: 10px 15px;
+            border-radius: 30px;
+            font-size: 14px;
+            z-index: 350;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transform: translateY(0);
+            opacity: 1;
+            transition: all 0.5s ease;
+        }
+        
+        .notification.hidden {
+            transform: translateY(-20px);
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        /* 上传资源面板 */
+        .upload-panel {
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .upload-panel h4 {
+            color: #ffb6c1;
+            margin-bottom: 8px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .upload-group {
+            margin-bottom: 10px;
+        }
+        
+        .upload-label {
+            font-size: 11px;
+            color: #e0c3fc;
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        .upload-input {
+            width: 100%;
+            padding: 6px;
+            border-radius: 4px;
+            border: 1px solid #4a2a7a;
+            background: rgba(74, 42, 122, 0.3);
+            color: white;
+            font-size: 11px;
+        }
+        
+        .upload-button {
+            background: linear-gradient(135deg, #00adee, #00c9ff);
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 5px;
+            font-size: 12px;
+        }
+        
+        .upload-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 8px rgba(0, 173, 238, 0.8);
+        }
+        
+        .upload-status {
+            font-size: 10px;
+            color: #ffcc00;
+            margin-top: 5px;
+            min-height: 12px;
+        }
+        
+        .upload-section {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+        
+        .storage-info {
+            font-size: 10px;
+            color: #e0c3fc;
+            margin-top: 10px;
+            padding: 6px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        //皇冠👑
+		.crown-icon {
+		    display: inline-block;
+		    margin-right: 8px;
+		    font-size: 18px;
+		    animation: crownPulse 2s infinite;
+		}
+		
+		@keyframes crownPulse {
+		    0% { transform: scale(1); }
+		    50% { transform: scale(1.1); }
+		    100% { transform: scale(1); }
+		}
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <canvas id="fireworksCanvas"></canvas>
+        
+        <div class="floating-texts" id="floatingTexts"></div>
+        
+        <div class="loading-indicator" id="loadingIndicator">
+            <div class="spinner"></div>
+            <p>正在加载资源，请稍候...</p>
+            <div class="status-message" id="loadingStatus"></div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+            </div>
+        </div>
+        
+        <div class="hint-box" id="hintBox">
+            <i class="fas fa-lightbulb"></i>提示：三击屏幕任意位置可播放音乐🎵
+        </div>
+        
+        <div class="notification hidden" id="textNotification">
+            <i class="fas fa-info-circle"></i> 文字设置已更新
+        </div>
+        
+        <div class="page-title">
+<h1>整个星空为你而绽放＆小燕子</h1>
+            <p>为具体而美好的生活喝彩-加油</p>
+        </div>
+        
+        <div class="resource-status" id="resourceStatus">
+            <div class="status-icon local" id="musicStatus"></div>
+            <span>音乐</span>
+            <div class="status-icon local" id="soundStatus"></div>
+            <span>音效</span>
+            <div class="status-icon local" id="imageStatus"></div>
+            <span>图片</span>
+            <div class="status-icon local" id="textStatus"></div>
+            <span>文字</span>
+        </div>
+        
+        <div class="top-controls">
+			<div class="firework-counter">
+			    <span class="crown-icon">👑</span> 烟花绽放: <span id="fireworkCount">0</span>
+			</div>
+            <div class="audio-control" id="audioControl">
+                <i class="fas fa-volume-up"></i>
+            </div>
+        </div>
+        
+        <div class="control-panel hidden" id="controlPanel">
+            <h3><i class="fas fa-sliders-h"></i> 控制面板</h3>
+            <div class="slider-container">
+                <label for="fireworkFrequency"><i class="fas fa-bolt"></i> 烟花频率</label>
+                <input type="range" id="fireworkFrequency" min="0" max="20" value="2">
+            </div>
+            <div class="slider-container">
+                <label for="textFrequency"><i class="fas fa-font"></i> 文字频率 </label>
+                <input type="range" id="textFrequency" min="0" max="2" value="1">
+                <div class="level-indicator">
+                    <span class="level-mark">0</span>
+                    <span class="level-mark">1</span>
+                    <span class="level-mark">2</span>
+                </div>
+            </div>
+            <div class="slider-container">
+                <label for="textSpeed"><i class="fas fa-tachometer-alt"></i> 文字速度 </label>
+                <input type="range" id="textSpeed" min="0" max="2" value="1">
+                <div class="level-indicator">
+                    <span class="level-mark">0</span>
+                    <span class="level-mark">1</span>
+                    <span class="level-mark">2</span>
+                </div>
+            </div>
+            <div class="slider-container">
+                <label for="musicVolume"><i class="fas fa-music"></i> 音乐音量</label>
+                <input type="range" id="musicVolume" min="0" max="100" value="50">
+            </div>
+            <div class="slider-container">
+                <label for="soundVolume"><i class="fas fa-volume"></i> 音效音量</label>
+                <input type="range" id="soundVolume" min="0" max="100" value="30">
+            </div>
+            
+            <!-- 上传资源面板 -->
+            <div class="upload-panel">
+                <h4><i class="fas fa-cloud-upload-alt"></i> 上传资源</h4>
+                
+                <div class="upload-group">
+                    <label class="upload-label" for="backgroundMusicUpload">
+                        <i class="fas fa-music"></i> 背景音乐
+                    </label>
+                    <input type="file" id="backgroundMusicUpload" class="upload-input" accept="audio/*">
+                    <div class="upload-status" id="musicUploadStatus"></div>
+                </div>
+                
+                <div class="upload-group">
+                    <label class="upload-label" for="fireworkSoundUpload">
+                        <i class="fas fa-fire"></i> 烟花音效
+                    </label>
+                    <input type="file" id="fireworkSoundUpload" class="upload-input" accept="audio/*">
+                    <div class="upload-status" id="soundUploadStatus"></div>
+                </div>
+                
+                <div class="upload-group">
+                    <label class="upload-label" for="imageUpload">
+                        <i class="fas fa-image"></i> 图片 (最多5张)
+                    </label>
+                    <input type="file" id="imageUpload" class="upload-input" accept="image/*" multiple>
+                    <div class="upload-status" id="imageUploadStatus"></div>
+                </div>
+                
+                <div class="upload-group">
+                    <label class="upload-label" for="textUpload">
+                        <i class="fas fa-font"></i> 文字 (文本文件)
+                    </label>
+                    <input type="file" id="textUpload" class="upload-input" accept=".txt">
+                    <div class="upload-status" id="textUploadStatus"></div>
+                </div>
+                
+                <button class="upload-button" id="applyUploadsButton">
+                    <i class="fas fa-check"></i> 应用所有上传
+                </button>
+            </div>
+        </div>
+        
+        <div class="tv-box hidden" id="tvBox">
+            <div class="tv-antenna">
+                <div class="antenna"></div>
+                <div class="antenna"></div>
+            </div>
+            <div class="tv-header">
+                <div class="tv-logo">
+                    <i class="fas fa-tv" style="color: white; font-size: 12.8px;"></i>
+                </div>
+                <div class="tv-title">小电视</div>
+            </div>
+            <div class="tv-screen">
+                <div class="tv-image active" id="tvImage1"></div>
+                <div class="tv-image" id="tvImage2"></div>
+                <div class="tv-image" id="tvImage3"></div>
+                <div class="tv-image" id="tvImage4"></div>
+            </div>
+            <div class="tv-info">
+                <div class="info-item">
+                    <span class="info-label">
+                    <i class="fas fa-calendar-heart">❤️</i> 相识天数</span>
+                    <span class="info-value"><span id="daysTogether">0</span>天</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label"><i class="fas fa-thermometer-half"></i> 当前温度</span>
+                    <span class="info-value" id="temperature">26°C</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label"><i class="fas fa-clock"></i> 当前时间</span>
+                    <span class="info-value" id="currentTime">00:00:00</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label"><i class="fas fa-smile"></i> 今日心情</span>
+                    <span class="info-value" id="mood">
+                        <div class="mood-icons">
+                            <span class="mood-icon">❤️</span>
+                            <span class="mood-icon">❤️</span>
+                            <span class="mood-icon">❤️</span>
+                            <span class="mood-icon">❤️</span>
+                            <span class="mood-icon">❤️</span>
+                        </div>
+                    </span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label"><i class="fas fa-cloud-sun"></i> 天气</span>
+                    <span class="info-value" id="weather">晴 28°C</span>
+                </div>
+            </div>
+        </div>
+        
+<!-- 放在tvBox后面 -->
+<div class="beijing-box hidden" id="beijingBox">
+    <h3><i class="fas fa-landmark"></i> 北京市</h3>
+    <div class="beijing-content">
+        <p><i class="fas fa-crown beijing-icon"></i> 中华人民共和国首都</p>
+        <p><i class="fas fa-building beijing-icon"></i> 简称：京</p>
+        <p><i class="fas fa-users beijing-icon"></i> 人口：2189万</p>
+        <p><i class="fas fa-map-marked-alt beijing-icon"></i> 面积：16410平方公里</p>
+        <p><i class="fas fa-star beijing-icon"></i> 著名景点：</p>
+        <ul>
+            <li>故宫博物院</li>
+            <li>天安门广场</li>
+            <li>长城</li>
+            <li>颐和园</li>
+            <li>天坛公园</li>
+        </ul>
+        <p><i class="fas fa-utensils beijing-icon"></i> 特色美食：</p>
+        <ul>
+            <li>北京烤鸭</li>
+            <li>炸酱面</li>
+            <li>豆汁焦圈</li>
+            <li>驴打滚</li>
+        </ul>
+        <p><i class="fas fa-heart beijing-icon"></i> 小燕子，北京欢迎你！</p>
+    </div>
+</div>
+        
+        
+        
+        
+			<!-- 修改按钮容器结构 -->
+		<div class="button-container hidden" id="buttonContainer">
+		    
+		    <button class="control-button" id="panelButton">
+		        <i class="fas fa-sliders-h"></i> 控制面板
+		    </button>
+		    <button class="control-button" id="tvButton">
+		        <i class="fas fa-tv"></i> 小电视
+		    </button>
+		    <!-- 添加所有省份按钮 -->
+		    <button class="control-button" id="beijingButton"><i class="fas fa-landmark"></i> 北京市</button>
+		    <button class="control-button" id="tianjinButton"><i class="fas fa-ship"></i> 天津市</button>
+		    <button class="control-button" id="hebeiButton"><i class="fas fa-industry"></i> 河北省</button>
+		    <button class="control-button" id="shanxiButton"><i class="fas fa-mountain"></i> 山西省</button>
+		    <button class="control-button" id="neimengguButton"><i class="fas fa-horse"></i> 内蒙古</button>
+		    <button class="control-button" id="liaoningButton"><i class="fas fa-industry"></i> 辽宁省</button>
+		    <button class="control-button" id="jilinButton"><i class="fas fa-snowflake"></i> 吉林省</button>
+		    <button class="control-button" id="heilongjiangButton"><i class="fas fa-snowman"></i> 黑龙江</button>
+		    <button class="control-button" id="shanghaiButton"><i class="fas fa-city"></i> 上海市</button>
+		    <button class="control-button" id="jiangsuButton"><i class="fas fa-water"></i> 江苏省</button>
+		    <button class="control-button" id="zhejiangButton"><i class="fas fa-bridge"></i> 浙江省</button>
+		    <button class="control-button" id="anhuiButton"><i class="fas fa-hills"></i> 安徽省</button>
+		    <button class="control-button" id="fujianButton"><i class="fas fa-ship"></i> 福建省</button>
+		    <button class="control-button" id="jiangxiButton"><i class="fas fa-lake"></i> 江西省</button>
+		    <button class="control-button" id="shandongButton"><i class="fas fa-mountain"></i> 山东省</button>
+		    <button class="control-button" id="henanButton"><i class="fas fa-wheat"></i> 河南省</button>
+		    <button class="control-button" id="hubeiButton"><i class="fas fa-water"></i> 湖北省</button>
+		    <button class="control-button" id="hunanButton"><i class="fas fa-pepper-hot"></i> 湖南省</button>
+		    <button class="control-button" id="guangdongButton"><i class="fas fa-building"></i> 广东省</button>
+		    <button class="control-button" id="guangxiButton"><i class="fas fa-mountain"></i> 广西</button>
+		    <button class="control-button" id="hainanButton"><i class="fas fa-umbrella-beach"></i> 海南省</button>
+		    <button class="control-button" id="chongqingButton"><i class="fas fa-city"></i> 重庆市</button>
+		    <button class="control-button" id="sichuanButton"><i class="fas fa-paw"></i> 四川省</button>
+		    <button class="control-button" id="guizhouButton"><i class="fas fa-hills"></i> 贵州省</button>
+		    <button class="control-button" id="yunnanButton"><i class="fas fa-mountain"></i> 云南省</button>
+		    <button class="control-button" id="xizangButton"><i class="fas fa-mountain"></i> 西藏</button>
+		    <button class="control-button" id="shaanxiButton"><i class="fas fa-landmark"></i> 陕西省</button>
+		    <button class="control-button" id="gansuButton"><i class="fas fa-desert"></i> 甘肃省</button>
+		    <button class="control-button" id="qinghaiButton"><i class="fas fa-mountain"></i> 青海省</button>
+		    <button class="control-button" id="ningxiaButton"><i class="fas fa-wind"></i> 宁夏</button>
+		    <button class="control-button" id="xinjiangButton"><i class="fas fa-desert"></i> 新疆</button>
+		    <button class="control-button" id="taiwanButton"><i class="fas fa-island-tropical"></i> 台湾省</button>
+		    <button class="control-button" id="xianggangButton"><i class="fas fa-shopping-bag"></i> 香港</button>
+		    <button class="control-button" id="aomenButton"><i class="fas fa-casino"></i> 澳门</button>
+		</div>
+		   
+		</div>
+		
+    </div>
+
+    <audio id="backgroundMusic" loop></audio>
+    <audio id="fireworkSound"></audio>
+
+    <script>
+        // 烟花颜色
+        const colors = [
+            '#ff3366', '#ff9933', '#ffcc00', '#66ccff', 
+            '#9966ff', '#ff66cc', '#ff5050', '#33cc99',
+            '#66ff66', '#66ccff', '#ffcc66', '#cc99ff',
+            '#ff3399', '#33ccff', '#ff9966', '#66ffcc'
+        ];
+        
+        // 获取Canvas元素和上下文
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // 音频元素
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        const fireworkSound = document.getElementById('fireworkSound');
+        const audioControl = document.getElementById('audioControl');
+        
+        // 设置初始音量
+        backgroundMusic.volume = 0.5;
+        fireworkSound.volume = 0.3;
+        
+        // 设置音频控制按钮事件
+        let isMuted = false;
+        audioControl.addEventListener('click', function() {
+            isMuted = !isMuted;
+            backgroundMusic.muted = isMuted;
+            fireworkSound.muted = isMuted;
+            
+            this.innerHTML = isMuted ? 
+                '<i class="fas fa-volume-mute"></i>' : 
+                '<i class="fas fa-volume-up"></i>';
+        });
+        
+        // 设置Canvas大小为窗口大小
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        
+        // 初始化Canvas大小
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        // 烟花计数器
+        let fireworkCounter = 0;
+        const fireworkCountEl = document.getElementById('fireworkCount');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const loadingStatus = document.getElementById('loadingStatus');
+        const progressBar = document.getElementById('progressBar');
+        const hintBox = document.getElementById('hintBox');
+        const textNotification = document.getElementById('textNotification');
+        const buttonContainer = document.getElementById('buttonContainer');
+        const daysTogether = document.getElementById('daysTogether');
+        
+        // 资源状态元素
+        const musicStatus = document.getElementById('musicStatus');
+        const soundStatus = document.getElementById('soundStatus');
+        const imageStatus = document.getElementById('imageStatus');
+        const textStatus = document.getElementById('textStatus');
+        
+        // 更新资源状态显示
+        function updateResourceStatus(element, status) {
+            element.classList.remove('local', 'network', 'failed');
+            switch(status) {
+                case 'local': element.classList.add('local'); break;
+                case 'network': element.classList.add('network'); break;
+                case 'failed': element.classList.add('failed'); break;
+            }
+        }
+        
+        // 相识日期（2024年3月12日）
+        const startDate = new Date(2024, 2, 12);
+        
+        // 计算相识天数
+        function calculateDaysTogether() {
+            const today = new Date();
+            const timeDiff = today.getTime() - startDate.getTime();
+            const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+            daysTogether.textContent = `${days}`;
+            return days;
+        }
+        
+        // 加载暖心文字
+        let warmTexts = [];
+        async function loadWarmTexts() {
+            // 尝试从本地存储加载自定义文本
+            const customTexts = localStorage.getItem('customWarmTexts');
+            if (customTexts) {
+                warmTexts = JSON.parse(customTexts);
+                updateResourceStatus(textStatus, 'local');
+                return { success: true, message: '自定义暖心文字加载成功' };
+            }
+            
+            try {
+                const response = await fetch('text/warm_texts.txt');
+                if (response.ok) {
+                    const text = await response.text();
+                    warmTexts = text.split('\n').filter(line => line.trim() !== '');
+                    updateResourceStatus(textStatus, 'local');
+                    return { success: true, message: '本地暖心文字加载成功' };
+                }
+            } catch (error) {
+                console.log('本地文字加载失败，使用内置文字');
+            }
+            
+            // 内置文字
+            warmTexts = [
+                "累了歇会儿，别硬撑呀，不然下一秒可能就变成'葛优躺'啦",
+                "愿我们携手走过更多美好时光",
+                "每一天都因你而更加精彩",
+                "心怀希望，未来可期",
+                "你是独一无二的存在",
+                "生活因你而美好",
+                "坚持梦想，终会发光",
+                "微笑面对每一天",
+                "你值得拥有最好的",
+                "困难只是暂时的",
+                "相信自己的力量",
+                "阳光总在风雨后",
+                "爱自己，是终身浪漫的开始",
+                "保持热爱，奔赴山海",
+                "你的努力终将开花结果",
+                "世界因你而不同",
+                "每一天都是生命的礼物",
+                "坚持做对的事，时间会给你答案",
+                "愿你被爱包围，幸福常在",
+                "保持善良，保持努力",
+                "最美的风景在路上",
+                "未来的路，希望能一路同行",
+                "皱眉头啦？笑一笑好看,不然皱纹都要被你挤出来开会啦",
+                "走,看场电影放松下,不去当观众,难道要在家当'沙发土豆'吗？",
+                "今天辛苦啦,喝口水吧,不然嘴巴都要干成'撒哈拉沙漠'啦",
+                "别急别慌,我陪你弄,我可是你专属的'万能小助手'哦",
+                "方案不急,思路清晰更重要,别让脑袋变成'浆糊搅拌机'啦",
+                "肩膀绷太紧？揉揉会好些,来,让我给你来个'超级马杀鸡'",
+                "星星还亮着,天塌不下来,就算塌下来也有我这个'人肉垫子'在呢",
+                "放下手机,我们出去走走啦,不然眼睛都要变成'电子屏幕监控器'啦",
+                "这事儿过了,请你吃大餐,咱们去把肚子撑成个'移动的小仓库'",
+                "我可能不擅长说情话，但会用行动把'我喜欢你'写进每一天",
+                "遇见你后，我的生活从黑白默片变成了4K全彩电影"
+            ];
+            
+            updateResourceStatus(textStatus, 'network');
+            return { success: true, message: '内置暖心文字加载成功' };
+        }
+        
+        // 加载音频资源
+        async function loadAudio() {
+            let musicLoaded = false;
+            let soundLoaded = false;
+            
+// 添加本地路径加载背景音乐
+    try {
+        backgroundMusic.src = 'musics/background.mp3'; // 修改为你的本地音乐路径
+        await new Promise((resolve, reject) => {
+            backgroundMusic.oncanplaythrough = resolve;
+            backgroundMusic.onerror = () => reject(new Error('本地音乐加载失败'));
+        });
+        musicLoaded = true;
+        updateResourceStatus(musicStatus, 'local');
+        console.log('本地背景音乐加载成功');
+    } catch (localError) {
+        console.log('本地背景音乐加载失败', localError);
+        // 继续尝试其他加载方式...
+    }
+
+    // 添加本地路径加载音效
+    try {
+        fireworkSound.src = 'musics/firework.mp3'; // 修改为你的本地音效路径
+        await new Promise((resolve, reject) => {
+            fireworkSound.oncanplaythrough = resolve;
+            fireworkSound.onerror = () => reject(new Error('本地音效加载失败'));
+        });
+        soundLoaded = true;
+        updateResourceStatus(soundStatus, 'local');
+        console.log('本地音效加载成功');
+    } catch (localError) {
+        console.log('本地音效加载失败', localError);
+        // 继续尝试其他加载方式...
+    }
+            /**
+            
+            // 尝试从本地存储加载背景音乐
+            const customMusic = localStorage.getItem('music/background.mp3');
+            if (customMusic) {
+                backgroundMusic.src = customMusic;
+                try {
+                    await new Promise((resolve, reject) => {
+                        backgroundMusic.oncanplaythrough = resolve;
+                        backgroundMusic.onerror = () => reject(new Error('加载失败'));
+                    });
+                    musicLoaded = true;
+                    updateResourceStatus(musicStatus, 'local');
+                } catch (e) {
+                    console.log('自定义背景音乐加载失败');
+                }
+            }
+            
+            // 尝试从本地存储加载音效
+            const customSound = localStorage.getItem('customFireworkSound？');
+            if (customSound) {
+                fireworkSound.src = customSound;
+                try {
+                    await new Promise((resolve, reject) => {
+                        fireworkSound.oncanplaythrough = resolve;
+                        fireworkSound.onerror = () => reject(new Error('音效加载失败'));
+                    });
+                    soundLoaded = true;
+                    updateResourceStatus(soundStatus, 'local');
+                } catch (e) {
+                    console.log('自定义音效加载失败');
+                }
+            }
+            **/
+            // 如果自定义资源加载失败，尝试网络资源
+            if (!musicLoaded) {
+                try {
+                    backgroundMusic.src = 'https://music.163.com/song/media/outer/url?id=1413863166.mp3';
+                    await new Promise((resolve, reject) => {
+                        backgroundMusic.oncanplaythrough = resolve;
+                        backgroundMusic.onerror = () => reject(new Error('音乐加载失败'));
+                    });
+                    musicLoaded = true;
+                    updateResourceStatus(musicStatus, 'network');
+                } catch (e) {
+                    console.log('网络背景音乐加载失败');
+                    updateResourceStatus(musicStatus, 'failed');
+                }
+            }
+            
+            if (!soundLoaded) {
+                try {
+                    fireworkSound.src = '';
+                    await new Promise((resolve, reject) => {
+                        fireworkSound.oncanplaythrough = resolve;
+                        fireworkSound.onerror = () => reject(new Error('音效加载失败'));
+                    });
+                    soundLoaded = true;
+                    updateResourceStatus(soundStatus, 'network');
+                } catch (e) {
+                    console.log('网络音效加载失败');
+                    updateResourceStatus(soundStatus, 'failed');
+                }
+            }
+            
+            return { music: musicLoaded, sound: soundLoaded };
+        }
+        
+        // 加载图片
+        async function loadImages() {
+            const tvImages = document.querySelectorAll('.tv-image');
+            let loadedCount = 0;
+            let usedCustom = false;
+            let usedNetwork = false;
+            
+            // 尝试从本地存储加载自定义图片
+	            for (let i = 0; i < 5; i++) {
+                const customImage = localStorage.getItem(`customImage${i}`);
+                if (customImage) {
+                    tvImages[i].style.backgroundImage = `url('${customImage}')`;
+                    loadedCount++;
+                    usedCustom = true;
+                }
+            }
+            
+            if (loadedCount === 5) {
+                updateResourceStatus(imageStatus, 'local');
+                return { success: true, message: '自定义图片加载成功' };
+            }
+            
+            // 图片资源
+            const imageSources = [
+                ['image/image1.jpg', 'https://images.unsplash.com/photo-1501854140801-50d01698950b?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&w=400'],
+                ['image/image2.jpg', 'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&w=400'],
+                ['image/image3.jpg', 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&w=400'],
+                ['image/image4.jpg', 'https://images.unsplash.com/photo-1476820865390-c52aeebb9891?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&w=400'],
+                ['image/image5.jpg', 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&w=400']
+            ];
+            
+            // 默认图片
+            const defaultImage = "https://images.unsplash.com/photo-1506744038136-46273834b3fb?crop=entropy&cs=tinysrgb&fit=crop&fm=jpg&h=300&w=400";
+            
+            for (let i = 0; i < 5; i++) {
+                // 如果这个位置已经有自定义图片，跳过
+                if (localStorage.getItem(`customImage${i}`)) continue;
+                
+                let loaded = false;
+                
+                // 尝试加载本地图片
+                try {
+                    await loadImageWithTimeout(imageSources[i][0], 1500);
+                    tvImages[i].style.backgroundImage = `url('${imageSources[i][0]}')`;
+                    loaded = true;
+                    loadedCount++;
+                } catch (error) {
+                    console.log(`本地图片 ${i+1} 加载失败`);
+                }
+                
+                // 本地加载失败，尝试网络图片
+                if (!loaded) {
+                    try {
+                        await loadImageWithTimeout(imageSources[i][1], 1500);
+                        tvImages[i].style.backgroundImage = `url('${imageSources[i][1]}')`;
+                        loaded = true;
+                        loadedCount++;
+                        usedNetwork = true;
+                    } catch (error) {
+                        console.log(`网络图片 ${i+1} 加载失败`);
+                    }
+                }
+                
+                // 如果都失败，使用默认图片
+                if (!loaded) {
+                    tvImages[i].style.backgroundImage = `url('${defaultImage}')`;
+                }
+            }
+            
+            // 更新图片状态
+            if (usedCustom) {
+                updateResourceStatus(imageStatus, 'local');
+                return { success: true, message: '图片加载成功（自定义+默认）' };
+            } else if (loadedCount === 4 && !usedNetwork) {
+                updateResourceStatus(imageStatus, 'local');
+                return { success: true, message: '图片加载成功（本地）' };
+            } else if (loadedCount === 4 && usedNetwork) {
+                updateResourceStatus(imageStatus, 'network');
+                return { success: true, message: '图片加载成功（网络）' };
+            } else {
+                updateResourceStatus(imageStatus, 'failed');
+                return { success: false, message: `${4 - loadedCount}张图片加载失败，使用默认图片` };
+            }
+        }
+        
+        // 带超时的图片加载
+        function loadImageWithTimeout(src, timeout) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                const timer = setTimeout(() => {
+                    img.onload = null;
+                    img.onerror = null;
+                    reject(new Error('图片加载超时'));
+                }, timeout);
+                
+                img.onload = () => {
+                    clearTimeout(timer);
+                    resolve();
+                };
+                
+                img.onerror = () => {
+                    clearTimeout(timer);
+                    reject(new Error('图片加载失败'));
+                };
+                
+                img.src = src;
+            });
+        }
+        
+        // 初始化资源加载
+        async function initResources() {
+            loadingIndicator.style.display = 'block';
+            let statusMessages = [];
+            let loadedCount = 0;
+            const totalResources = 4;
+            
+            // 更新进度条
+            function updateProgress() {
+                loadedCount++;
+                const percent = Math.min(100, Math.round((loadedCount / totalResources) * 100));
+                progressBar.style.width = `${percent}%`;
+            }
+            
+            try {
+                // 并行加载资源
+                const promises = [
+                    loadWarmTexts().then(result => {
+                        statusMessages.push(result.message);
+                        updateProgress();
+                    }),
+                    loadAudio().then(result => {
+                        statusMessages.push(result.music ? '音频加载成功' : '背景音乐加载失败');
+                        statusMessages.push(result.sound ? '音效加载成功' : '音效加载失败');
+                        updateProgress();
+                        updateProgress(); // 音频包含两个资源
+                    }),
+                    loadImages().then(result => {
+                        statusMessages.push(result.message);
+                        updateProgress();
+                    })
+                ];
+                
+                // 设置5秒超时
+                await Promise.race([
+                    Promise.all(promises),
+                    new Promise(resolve => setTimeout(resolve, 5000))
+                ]);
+                
+                loadingStatus.textContent = statusMessages.join('\n');
+                loadingStatus.style.color = '#66ff66';
+            } catch (error) {
+                console.error('资源加载错误:', error);
+                loadingStatus.textContent = '资源加载完成，部分资源可能未加载成功';
+                loadingStatus.style.color = '#ffcc00';
+            } finally {
+                // 延迟隐藏加载指示器
+                setTimeout(() => {
+                    loadingIndicator.style.display = 'none';
+                    
+                    // 在用户交互后开始播放音乐
+                    document.addEventListener('click', function startMusic() {
+                        try {
+                            backgroundMusic.play().catch(e => {
+                                console.log('需要用户交互才能播放音频');
+                                // 重试播放
+                                setTimeout(() => backgroundMusic.play(), 1000);
+                            });
+                            document.removeEventListener('click', startMusic);
+                        } catch (e) {
+                            console.log('音频播放错误:', e);
+                        }
+                    }, { once: true });
+                    
+                    // 显示提示框，5秒后自动隐藏
+                    setTimeout(() => {
+                        hintBox.classList.add('hidden');
+                    }, 5000);
+                }, 1000);
+            }
+        }
+        
+        // 烟花类
+        class Firework {
+            constructor() {
+                this.reset();
+                this.id = Date.now() + Math.random().toString(36).substr(2, 9); // 唯一ID
+            }
+            
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = canvas.height;
+                this.targetY = Math.random() * canvas.height * 0.4 + 50;
+                this.currentX = this.x;
+                this.currentY = this.y;
+                this.speed = 2 + Math.random() * 3;
+                this.size = Math.random() * 2 + 1;
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                
+               // 为整个烟花选择一个随机颜色
+                this.explosionColor = colors[Math.floor(Math.random() * colors.length)];
+                this.particles = [];
+                this.state = 0;
+            }
+            
+            update() {
+                if (this.state === 0) {
+                    this.currentY -= this.speed;
+                    if (this.currentY <= this.targetY) {
+                        this.explode();
+                        fireworkCounter++;
+                        fireworkCountEl.textContent = fireworkCounter;
+                    }
+                } else {
+                    for (let i = 0; i < this.particles.length; i++) {
+                        this.particles[i].update();
+                        if (this.particles[i].alpha <= 0) {
+                            this.particles.splice(i, 1);
+                            i--;
+                        }
+                    }
+                    if (this.particles.length === 0) {
+                        this.reset();
+                    }
+                }
+            }
+            
+            explode() {
+                this.state = 1;
+                try {
+                    fireworkSound.currentTime = 0;
+                    fireworkSound.play().catch(e => console.log('音效播放失败:', e));
+                } catch (e) {
+                    console.log('音效播放错误:', e);
+                }
+                
+                const particleCount = Math.floor(Math.random() * 200) + 150;
+                for (let i = 0; i < particleCount; i++) {
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 6 + 2;
+                    const vx = Math.cos(angle) * speed;
+                    const vy = Math.sin(angle) * speed;
+                    const size = Math.random() * 2 + 1;
+                    
+                    
+                    const color = this.explosionColor;
+                    //const color = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    this.particles.push({
+                        x: this.currentX,
+                        y: this.currentY,
+                        vx: vx,
+                        vy: vy,
+                        size: size,
+                        color: color,
+                        alpha: 1,
+                        gravity: 0.05,
+                        friction: 0.97,
+                        update: function() {
+                            this.x += this.vx;
+                            this.y += this.vy;
+                            this.vy += this.gravity;
+                            this.vx *= this.friction;
+                            this.vy *= this.friction;
+                            this.alpha -= 0.008;
+                        }
+                    });
+                }
+            }
+            
+            draw() {
+                if (this.state === 0) {
+		// 绘制上升轨迹线（保持不变）
+		        ctx.beginPath();
+		        ctx.moveTo(this.x, canvas.height);
+		        ctx.lineTo(this.currentX, this.currentY);
+		        ctx.strokeStyle = this.color;
+		        ctx.lineWidth = 1;
+		        ctx.stroke();
+		        
+		        // 绘制皇冠图标代替圆形
+		        ctx.font = `${this.size * 4}px Arial`; // 根据烟花大小调整字体
+		        ctx.fillStyle = this.color;
+		        ctx.textAlign = 'center';
+		        ctx.textBaseline = 'middle';
+		        ctx.fillText('👑', this.currentX, this.currentY);
+                } else {
+                    for (let i = 0; i < this.particles.length; i++) {
+                        const p = this.particles[i];
+                        ctx.beginPath();
+                        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                        ctx.fillStyle = `rgba(${parseInt(p.color.slice(1, 3), 16)}, ${parseInt(p.color.slice(3, 5), 16)}, ${parseInt(p.color.slice(5, 7), 16)}, ${p.alpha})`;
+                        ctx.fill();
+                    }
+                }
+            }
+        }
+        
+        
+        // 创建烟花数组
+        const fireworks = [];
+        const fireworkCount = 6;
+        let fireworkInterval = 80;
+        
+        // 初始化烟花
+        for (let i = 0; i < fireworkCount; i++) {
+            fireworks.push(new Firework());
+            setTimeout(() => {}, i * fireworkInterval);
+        }
+        
+        // 飘屏文字管理
+        class FloatingTextManager {
+            constructor() {
+                this.texts = [];
+                this.container = document.getElementById('floatingTexts');
+                this.lastTextTime = 0;
+                // 文字频率等级 (0-5)
+                this.textFrequencyLevel = 1;
+                // 文字速度等级 (0-5)
+                this.speedLevel = 3;
+                // 记录上一个频率等级
+                this.lastFrequencyLevel = 1;
+            }
+            
+            // 根据频率等级获取间隔时间
+            getFrequencyInterval() {
+                // 频率等级对应的间隔时间（毫秒）
+                const intervals = [
+                    Number.MAX_SAFE_INTEGER, // 等级0：不显示
+                    1000, // 等级1：每1秒一个
+                    500, // 等级2：每0.5秒一个
+                    250, // 等级3：每0.25秒一个
+                    150,  // 等级4：每0.15秒一个
+                    50   // 等级5：每0.05秒一个
+                ];
+                return intervals[this.textFrequencyLevel];
+            }
+            
+            // 根据速度等级获取动画持续时间
+            getSpeedDuration() {
+                // 速度等级对应的动画持续时间（秒）
+                const durations = [
+                    9999, // 等级0：几乎不动
+                    20,   // 等级1：20秒
+                    10,   // 等级2：10秒
+                    5,   // 等级3：5秒
+                    2,   // 等级4：2秒
+                    1    // 等级5：1秒
+                ];
+                return durations[this.speedLevel];
+            }
+            
+            addText() {
+                if (warmTexts.length === 0 || this.textFrequencyLevel === 0) return;
+                
+                const text = document.createElement('div');
+                text.className = 'floating-text';
+                const textIndex = Math.floor(Math.random() * warmTexts.length);
+			                text.textContent = warmTexts[textIndex];
+			// 只在下1/5屏幕显示（屏幕底部20%区域）
+			    const minTop = canvas.height * 0.7;  // 屏幕75%位置开始
+			    const maxTop = canvas.height - 50;   // 屏幕底部减去50px边距
+			    const top = Math.random() * (maxTop - minTop) + minTop;
+			    text.style.top = `${top}px`;
+			    
+			    const size = Math.floor(Math.random() * 4) + 14;
+			    text.style.fontSize = `${size}px`;
+			    text.style.color = colors[Math.floor(Math.random() * colors.length)];
+			                // 根据速度等级设置动画持续时间
+                const duration = this.getSpeedDuration();
+                text.style.animationDuration = `${duration}s`;
+                
+                this.container.appendChild(text);
+                
+                setTimeout(() => {
+                    if (text.parentNode) {
+                        text.parentNode.removeChild(text);
+                    }
+                }, duration * 1000);
+            }
+            
+            // 清除所有漂浮文字
+            clearAllTexts() {
+                while (this.container.firstChild) {
+                    this.container.removeChild(this.container.firstChild);
+                }
+            }
+            
+            update() {
+                const now = Date.now();
+                const interval = this.getFrequencyInterval();
+                
+                // 当频率等级从0变为非0时，重置计时器
+                if (this.lastFrequencyLevel === 0 && this.textFrequencyLevel > 0) {
+                    this.lastTextTime = now;
+                }
+                
+                if (now - this.lastTextTime > interval) {
+                    this.addText();
+                    this.lastTextTime = now;
+                }
+                
+                this.lastFrequencyLevel = this.textFrequencyLevel;
+            }
+        }
+        
+        // 创建飘屏文字管理器
+        const textManager = new FloatingTextManager();
+        
+        // 动画循环
+        function animate() {
+            ctx.fillStyle = 'rgba(10, 5, 30, 0.1)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+			// 清除画布但不绘制半透明背景
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < fireworks.length; i++) {
+                fireworks[i].update();
+                fireworks[i].draw();
+            }
+            
+            textManager.update();
+            requestAnimationFrame(animate);
+        }
+        
+        // 启动动画
+        function startAnimation() {
+            animate();
+            setTimeout(() => {
+                for (let i = 0; i < 1; i++) {
+                    setTimeout(() => {
+                        textManager.addText();
+                    }, i * 10000);
+                }
+            }, 10000);
+        }
+        
+        // 控制面板事件
+        const fireworkFrequency = document.getElementById('fireworkFrequency');
+        const textFrequency = document.getElementById('textFrequency');
+        const textSpeed = document.getElementById('textSpeed');
+        const musicVolume = document.getElementById('musicVolume');
+        const soundVolume = document.getElementById('soundVolume');
+        const panelButton = document.getElementById('panelButton');
+        const tvButton = document.getElementById('tvButton');
+        const controlPanel = document.getElementById('controlPanel');
+        const tvBox = document.getElementById('tvBox');
+        
+        fireworkFrequency.addEventListener('input', function() {
+            fireworkInterval = parseInt(this.value);
+        });
+        
+        // 文字频率控制 (0-5级)
+        textFrequency.addEventListener('input', function() {
+            const newLevel = parseInt(this.value);
+            
+            // 当从0变为非0时，清除所有文字
+            if (textManager.textFrequencyLevel === 0 && newLevel > 0) {
+                textManager.clearAllTexts();
+                
+                // 显示通知
+                textNotification.classList.remove('hidden');
+                setTimeout(() => {
+                    textNotification.classList.add('hidden');
+                }, 2000);
+            }
+            
+            textManager.textFrequencyLevel = newLevel;
+        });
+        
+        // 文字速度控制 (0-5级)
+        textSpeed.addEventListener('input', function() {
+            const newLevel = parseInt(this.value);
+            
+            // 当速度改变时，清除所有文字
+            if (textManager.speedLevel !== newLevel) {
+                textManager.clearAllTexts();
+                
+                // 显示通知
+                textNotification.classList.remove('hidden');
+                setTimeout(() => {
+                    textNotification.classList.add('hidden');
+                }, 2000);
+            }
+            
+            textManager.speedLevel = newLevel;
+        });
+        
+        musicVolume.addEventListener('input', function() {
+            backgroundMusic.volume = this.value / 100;
+        });
+        
+        soundVolume.addEventListener('input', function() {
+            fireworkSound.volume = this.value / 100;
+        });
+        
+        let panelVisible = false;
+        panelButton.addEventListener('click', function() {
+        
+beijingBox.classList.add('hidden');
+    beijingBoxVisible = false;
+        
+        
+            tvBox.classList.add('hidden');
+            panelVisible = !panelVisible;
+            controlPanel.classList.toggle('hidden', !panelVisible);
+            this.innerHTML = panelVisible ? 
+                '<i class="fas fa-times"></i> 关闭面板' : 
+                '<i class="fas fa-sliders-h"></i> 控制面板';
+        });
+        
+        let tvVisible = false;
+        tvButton.addEventListener('click', function() {
+        
+beijingBox.classList.add('hidden');
+    beijingBoxVisible = false;
+        
+            controlPanel.classList.add('hidden');
+            panelVisible = false;
+            panelButton.innerHTML = '<i class="fas fa-sliders-h"></i> 控制面板';
+            tvVisible = !tvVisible;
+            tvBox.classList.toggle('hidden', !tvVisible);
+            this.innerHTML = tvVisible ? 
+                '<i class="fas fa-times"></i> 关闭电视' : 
+                '<i class="fas fa-tv"></i> 小电视';
+        });
+        
+        // 小电视图片轮播
+        function startImageCarousel() {
+            const tvImages = document.querySelectorAll('.tv-image');
+            let currentImageIndex = 0;
+            
+            function changeTvImage() {
+                tvImages[currentImageIndex].classList.remove('active');
+                currentImageIndex = (currentImageIndex + 1) % tvImages.length;
+                tvImages[currentImageIndex].classList.add('active');
+            }
+            
+            setInterval(changeTvImage, 4000);
+        }
+        
+        // 更新时间
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('currentTime').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        
+        // 模拟天气数据
+        function updateWeather() {
+            const weatherTypes = ["晴", "多云", "小雨", "阴天", "阵雨"];
+            const weather = weatherTypes[Math.floor(Math.random() * weatherTypes.length)];
+            const temp = Math.floor(Math.random() * 15) + 20;
+            document.getElementById('weather').textContent = `${weather} ${temp}°C`;
+        }
+        
+        
+		function setupTripleClick() {
+		    let clickCount = 0;
+		    let lastClickTime = 0;
+		    const tripleClickThreshold = 300; // 300ms内三次点击
+		    
+		    document.addEventListener('click', (e) => {
+		        // 添加按钮容器到排除列表
+					 if (e.target.closest('.control-panel, .tv-box, .beijing-box, .top-controls, .button-container')) {
+			        return;
+			    }
+		        
+		        const now = Date.now();
+		        
+		        if (now - lastClickTime > tripleClickThreshold) {
+		            clickCount = 1;
+		        } else {
+		            clickCount++;
+		        }
+		        
+		        lastClickTime = now;
+		        
+		        if (clickCount === 3) {
+		            // 在切换前检测状态
+		            const wasHidden = buttonContainer.classList.contains('hidden');
+		            
+		            // 切换按钮容器显示状态
+		            buttonContainer.classList.toggle('hidden');
+		            
+		            // 如果按钮从隐藏变为显示，5秒后自动隐藏
+		            if (wasHidden) {
+		                // 清除之前的定时器
+		                if (buttonContainer.hideTimeout) {
+		                    clearTimeout(buttonContainer.hideTimeout);
+		                }
+		                
+		                buttonContainer.hideTimeout = setTimeout(() => {
+		                    buttonContainer.classList.add('hidden');
+		                }, 5000);
+		            } else {
+		                // 按钮被隐藏，清除自动隐藏定时器
+		                if (buttonContainer.hideTimeout) {
+		                    clearTimeout(buttonContainer.hideTimeout);
+		                }
+		            }
+		            
+		            // 重置点击计数
+		            clickCount = 0;
+		        }
+		    });
+		    
+		    // 阻止按钮点击冒泡
+		    buttonContainer.addEventListener('click', (e) => {
+		        e.stopPropagation();
+		    });
+		}
+				  // 文件上传处理
+        function setupFileUploads() {
+            const applyUploadsButton = document.getElementById('applyUploadsButton');
+            const bgMusicInput = document.getElementById('backgroundMusicUpload');
+            const soundInput = document.getElementById('fireworkSoundUpload');
+            const imageInput = document.getElementById('imageUpload');
+            const textInput = document.getElementById('textUpload');
+            
+            const musicStatusEl = document.getElementById('musicUploadStatus');
+            const soundStatusEl = document.getElementById('soundUploadStatus');
+            const imageStatusEl = document.getElementById('imageUploadStatus');
+            const textStatusEl = document.getElementById('textUploadStatus');
+            
+            // 应用所有上传
+            applyUploadsButton.addEventListener('click', function() {
+                // 应用背景音乐
+                if (bgMusicInput.files.length > 0) {
+                    const file = bgMusicInput.files[0];
+                    if (file.type.startsWith('audio/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const objectURL = URL.createObjectURL(file);
+                            backgroundMusic.src = objectURL;
+                            backgroundMusic.load();
+                            
+                            // 存储到localStorage
+                            localStorage.setItem('customBackgroundMusic', objectURL);
+                            
+                            musicStatusEl.textContent = `已应用: ${file.name}`;
+                            updateResourceStatus(musicStatus, 'local');
+                            
+                            // 尝试播放新音乐
+                            backgroundMusic.play().catch(e => {
+                                console.log('需要用户交互才能播放音频');
+                            });
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        musicStatusEl.textContent = '请选择音频文件';
+                    }
+                }
+                
+                // 应用音效
+                if (soundInput.files.length > 0) {
+                    const file = soundInput.files[0];
+                    if (file.type.startsWith('audio/')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const objectURL = URL.createObjectURL(file);
+                            fireworkSound.src = objectURL;
+                            fireworkSound.load();
+                            
+                            // 存储到localStorage
+                            localStorage.setItem('customFireworkSound', objectURL);
+                            
+                            soundStatusEl.textContent = `已应用: ${file.name}`;
+                            updateResourceStatus(soundStatus, 'local');
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        soundStatusEl.textContent = '请选择音频文件';
+                    }
+                }
+                
+                // 应用图片
+                if (imageInput.files.length > 0) {
+                    const files = Array.from(imageInput.files);
+                    const validImages = files.filter(file => file.type.startsWith('image/'));
+                    const maxImages = Math.min(validImages.length, 4);
+                    
+                    for (let i = 0; i < maxImages; i++) {
+                        const file = validImages[i];
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const dataURL = e.target.result;
+                            // 存储到localStorage
+                            localStorage.setItem(`customImage${i}`, dataURL);
+                            
+                            // 设置到电视图片
+                            const tvImages = document.querySelectorAll('.tv-image');
+                            tvImages[i].style.backgroundImage = `url('${dataURL}')`;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                    
+                    imageStatusEl.textContent = `已应用 ${maxImages} 张图片`;
+                    updateResourceStatus(imageStatus, 'local');
+                }
+                
+                // 应用文字
+                if (textInput.files.length > 0) {
+                    const file = textInput.files[0];
+                    if (file.type === 'text/plain' || file.name.endsWith('.txt')) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            warmTexts = e.target.result.split('\n').filter(line => line.trim() !== '');
+                            
+                            // 存储到localStorage
+                            localStorage.setItem('customWarmTexts', JSON.stringify(warmTexts));
+                            
+                            textStatusEl.textContent = `已应用: ${file.name}`;
+                            updateResourceStatus(textStatus, 'local');
+                            
+                            // 清除现有文字并重新开始
+                            textManager.clearAllTexts();
+                            textManager.lastTextTime = 0;
+                        };
+                        reader.readAsText(file);
+                    } else {
+                        textStatusEl.textContent = '请选择文本文件(.txt)';
+                    }
+                }
+                
+                // 显示成功通知
+                textNotification.textContent = "资源已成功应用并保存";
+                textNotification.classList.remove('hidden');
+                setTimeout(() => {
+                    textNotification.classList.add('hidden');
+                }, 2000);
+            });
+        }
+        
+        // 初始化应用
+        function init() {
+            calculateDaysTogether();
+            setInterval(updateTime, 1000);
+            setInterval(updateWeather, 30000);
+            setInterval(calculateDaysTogether, 60000);
+            
+            
+            
+            
+            initResources().then(() => {
+                startAnimation();
+                startImageCarousel();
+                updateWeather();
+                setupTripleClick();
+                setupFileUploads();
+            });
+            
+				// 获取新按钮元素
+				const xinjiangButton = document.getElementById('xinjiangButton');
+				const chongqingButton = document.getElementById('chongqingButton');
+				const shanghaiButton = document.getElementById('shanghaiButton');
+				const foodButton = document.getElementById('foodButton');
+				const beijingButton = document.getElementById('beijingButton');
+				const beijingBox = document.getElementById('beijingBox');
+				let beijingBoxVisible = false;
+							
+				
+				
+				
+				// 获取所有省份按钮并添加点击事件
+			    const provinces = [
+			        'beijing', 'tianjin', 'hebei', 'shanxi', 'neimenggu', 
+			        'liaoning', 'jilin', 'heilongjiang', 'shanghai', 'jiangsu',
+			        'zhejiang', 'anhui', 'fujian', 'jiangxi', 'shandong',
+			        'henan', 'hubei', 'hunan', 'guangdong', 'guangxi',
+			        'hainan', 'chongqing', 'sichuan', 'guizhou', 'yunnan',
+			        'xizang', 'shaanxi', 'gansu', 'qinghai', 'ningxia',
+			        'xinjiang', 'taiwan', 'xianggang', 'aomen'
+			    ];
+			    
+					beijingButton.addEventListener('click', function() {
+				    // 隐藏其他面板
+				    controlPanel.classList.add('hidden');
+				    tvBox.classList.add('hidden');
+				    panelVisible = false;
+				    tvVisible = false;
+				    
+				    // 重置其他面板按钮的文字
+				    panelButton.innerHTML = '<i class="fas fa-sliders-h"></i> 控制面板';
+				    tvButton.innerHTML = '<i class="fas fa-tv"></i> 小电视';
+				    
+				    // 切换北京弹窗
+				    beijingBoxVisible = !beijingBoxVisible;
+				    beijingBox.classList.toggle('hidden', !beijingBoxVisible);
+				    
+				    // 如果显示北京弹窗，触发特殊烟花
+				    if (beijingBoxVisible) {
+				       // triggerSpecialFireworks("北京市");
+				    }
+				});
+			    
+			    
+			    
+			    
+			    
+			    provinces.forEach(province => {
+			        const button = document.getElementById(`${province}Button`);
+			        if (button) {
+			            button.addEventListener('click', function() {
+			                // 获取省份中文名（从按钮文本中提取）
+			                const provinceName = this.textContent.trim();
+			               // showNotification(`小燕子：欢迎来到${provinceName}！`);
+			                
+			                // 触发烟花效果
+			               // triggerSpecialFireworks(provinceName);
+			            });
+			        }
+			    });
+				
+				// 新增函数：显示通知
+				function showNotification(message) {
+				    textNotification.textContent = message;
+				    textNotification.classList.remove('hidden');
+				    setTimeout(() => {
+				        textNotification.classList.add('hidden');
+				    }, 2000);
+				}
+            
+		// 新增函数：触发特殊烟花效果
+			function triggerSpecialFireworks(province) {
+			    // 这里可以添加特定省份的特殊效果
+			    for(let i = 0; i < 1; i++) {
+			        setTimeout(() => {
+			           // const firework = new Firework();
+			           // firework.targetY = Math.random() * canvas.height * 0.3 + 50;
+			          //  fireworks.push(firework);
+					
+			            
+			            
+			        }, i * 20000);
+			        
+			    }
+							    
+							    
+			    
+			    
+			    
+			}
+			
+			
+			            
+        }
+        
+        window.addEventListener('orientationchange', resizeCanvas);
+        init();
+    </script>
+    
+</body>
+</html>
